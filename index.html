@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <link rel="stylesheet" href="assets/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://necolas.github.io/normalize.css/8.0.1/normalize.css"
+    />
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <h1>PIXEL DRAW</h1>
+      <p>
+        Input <b>GRID</b> size(max 2 digits):
+        <input id="grid_height" type="text" />
+      </p>
+      <p>
+        Input <b>GRID CELL</b> size in pixels(from 8 to 32):
+        <input id="cell_size" type="text" />
+      </p>
+      <div class="draw_button_wrap">
+        <button class="draw_button">
+          <p>DRAW GRID</p>
+        </button>
+      </div>
+    </div>
+    <div class="grid_wrap">
+      <div id="_grid"></div>
+    </div>
+    <script src="grid.js"></script>
+  </body>
+</html>
