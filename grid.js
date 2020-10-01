@@ -36,7 +36,7 @@ function gridDraw() {
 
   height = document.getElementById("grid_height").value;
   height = height ? height : "16";
-  width = document.getElementsById("grid_width").value;
+  width = document.getElementById("grid_width").value;
   width = width ? width : "32";
   size = document.getElementById("cell_size").value;
   size = size ? size : "24";
