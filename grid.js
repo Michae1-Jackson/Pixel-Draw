@@ -41,12 +41,8 @@ function gridDraw() {
   size = document.getElementById("cell_size").value;
   size = size ? Number(size) : 16;
 
-  if (
-    !(1 <= height && height <= 64) ||
-    !(1 <= width && width <= 96) ||
-    !(12 <= size && size <= 54)
-  ) {
-    window.alert("Please enter according to the required form");
+  if (!(1 <= height <= 64) || !(1 <= width <= 96) || !(12 <= size <= 54)) {
+    window.alert("Please enter values according to the required form");
     return;
   }
 
@@ -54,14 +50,15 @@ function gridDraw() {
     grid.removeChild(grid.lastElementChild);
   }
 
-  grid.setAttribute("style", ` width: ${2 * height * (size + 1)}px;`);
+  grid.setAttribute("style", ` width: ${width * size}px;`);
 
   for (let i = 0; i < height; i++) {
     let level = document.createElement("div");
     level.setAttribute("class", " level");
     level.setAttribute(
       "style",
-      `height: ${size + 1}px; width: ${width * size + 1}px;`
+      `height: ${size}px;
+       width: ${width * size}px;`
     );
 
     for (let j = 0; j < width; j++) {
