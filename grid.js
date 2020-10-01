@@ -26,7 +26,7 @@ function cellsActivate(picked) {
   var cells = document.getElementsByClassName("cell");
   for (const cell of cells) {
     cell.addEventListener("mousedown", function () {
-      cellColor = cell.setAttribute("class", `cell ${picked}`);
+      cellColor = cell.setAttribute("class", `cell painted ${picked}`);
     });
   }
 }
@@ -39,9 +39,13 @@ function gridDraw() {
   width = document.getElementById("grid_width").value;
   width = width ? Number(width) : 48;
   size = document.getElementById("cell_size").value;
-  size = size ? Number(size) : 16;
+  size = size ? Number(size) : 20;
 
-  if (!(1 <= height <= 64) || !(1 <= width <= 96) || !(12 <= size <= 54)) {
+  if (
+    !(1 <= height && height <= 64) ||
+    !(1 <= width && width <= 96) ||
+    !(12 <= size && size <= 54)
+  ) {
     window.alert("Please enter values according to the required form");
     return;
   }
