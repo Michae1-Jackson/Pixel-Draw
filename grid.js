@@ -1,3 +1,16 @@
+var pickedColor = "black";
+
+(function () {
+  var colors = document.getElementsByClassName("color_block");
+  for (const color of colors) {
+    color.addEventListener("click", function () {
+      pickedColor = color.getAttribute("class").split(" ")[1];
+      cellsActivate(pickedColor);
+      console.log(pickedColor);
+    });
+  }
+})();
+
 function cellDraw(size) {
   let brick = document.createElement("div");
   brick.setAttribute("class", "cell");
@@ -9,12 +22,11 @@ function cellDraw(size) {
   return brick;
 }
 
-function cellsActivate() {
+function cellsActivate(picked) {
   var cells = document.getElementsByClassName("cell");
-  console.log(cells);
   for (const cell of cells) {
-    cell.addEventListener("click", function () {
-      cell.setAttribute("class", "cell black");
+    cell.addEventListener("mousedown", function () {
+      cellColor = cell.setAttribute("class", `cell ${picked}`);
     });
   }
 }
@@ -55,7 +67,7 @@ function gridDraw() {
     grid.append(level);
   }
 
-  cellsActivate();
+  cellsActivate(pickedColor);
 }
 
 const drawCellButton = document.querySelector("button");
