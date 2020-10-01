@@ -1,39 +1,57 @@
 var pickedColor = "black";
+var grid = document.getElementById("_grid");
+var cells = document.getElementsByClassName("cell");
+var colors = document.getElementsByClassName("color_block");
 
 (function () {
-  var colors = document.getElementsByClassName("color_block");
   for (const color of colors) {
     color.addEventListener("click", function () {
       pickedColor = color.getAttribute("class").split(" ")[1];
-      cellsActivate(pickedColor);
+      cellsActivate();
       console.log(pickedColor);
     });
   }
 })();
 
-function cellDraw(size) {
-  let brick = document.createElement("div");
-  brick.setAttribute("class", "cell");
-  brick.setAttribute(
+function cellCreate(size) {
+  let cell = document.createElement("div");
+  cell.setAttribute("class", "cell");
+  cell.setAttribute(
     "style",
     ` height: ${size}px;
       width: ${size}px;`
   );
-  return brick;
+  return cell;
 }
 
-function cellsActivate(picked) {
-  var cells = document.getElementsByClassName("cell");
-  for (const cell of cells) {
-    cell.addEventListener("mousedown", function () {
-      cellColor = cell.setAttribute("class", `cell painted ${picked}`);
-    });
+function startDrawing() {
+  for (let cell of cells) {
+    cell.addEventListener("mouseover", changeColor);
   }
 }
 
-function gridDraw() {
-  let grid = document.getElementById("_grid");
+function stopDrawing() {
+  for (let cell of cells) {
+    cell.removeEventListener("mouseover", changeColor);
+  }
+}
 
+function changeColor() {
+  this.style.backgroundColor = pickedColor;
+}
+
+function cellsActivate() {
+  for (let cell of cells) {
+    cell.addEventListener("mousedown", changeColor);
+  }
+  grid.addEventListener("mouseenter", function () {
+    grid.addEventListener("mousedown", startDrawing);
+    grid.addEventListener("mouseup", stopDrawing);
+    grid.addEventListener("mouseleave", stopDrawing);
+  });
+}
+
+function gridDraw() {
   height = document.getElementById("grid_height").value;
   height = height ? Number(height) : 24;
   width = document.getElementById("grid_width").value;
@@ -42,9 +60,9 @@ function gridDraw() {
   size = size ? Number(size) : 20;
 
   if (
-    !(1 <= height && height <= 64) ||
-    !(1 <= width && width <= 96) ||
-    !(12 <= size && size <= 54)
+    !(1 <= height && height <= 96) ||
+    !(1 <= width && width <= 192) ||
+    !(6 <= size && size <= 54)
   ) {
     window.alert("Please enter values according to the required form");
     return;
@@ -54,24 +72,29 @@ function gridDraw() {
     grid.removeChild(grid.lastElementChild);
   }
 
-  grid.setAttribute("style", ` width: ${width * size}px;`);
+  grid.setAttribute(
+    "style",
+    `height: ${height * size}px;
+     width: ${width * size}px;`
+  );
 
   for (let i = 0; i < height; i++) {
     let level = document.createElement("div");
     level.setAttribute("class", " level");
     level.setAttribute(
       "style",
-      `height: ${size}px;
-       width: ${width * size}px;`
+      ` height: ${size}px;
+        width: ${width * size}px;
+        line-height: ${0}`
     );
 
     for (let j = 0; j < width; j++) {
-      level.append(cellDraw(size));
+      level.append(cellCreate(size));
     }
     grid.append(level);
   }
 
-  cellsActivate(pickedColor);
+  cellsActivate();
 }
 
 const drawGridButton = document.querySelector("button");

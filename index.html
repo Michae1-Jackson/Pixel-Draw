@@ -17,15 +17,15 @@
     <div class="wrapper">
       <h1>PIXEL DRAW</h1>
       <p>
-        <b>GRID</b> height in cells [1 &mdash; 64]:
+        <b>GRID</b> height in cells [1 &mdash; 96]:
         <input id="grid_height" type="text" />
       </p>
       <p>
-        <b>GRID</b> width in cells [1 &mdash; 96]:
+        <b>GRID</b> width in cells [1 &mdash; 192]:
         <input id="grid_width" type="text" />
       </p>
       <p>
-        <b>GRID CELL</b> size in pixels [12 &mdash; 54]:
+        <b>GRID CELL</b> size in pixels [6 &mdash; 54]:
         <input id="cell_size" type="text" />
       </p>
       <div class="draw_button_wrap">
@@ -61,7 +61,11 @@
       <div class="color_block OrangeRed"></div>
     </div>
     <div class="grid_wrap">
-      <div id="_grid"></div>
+      <div id="_grid">
+        <div class="level">
+          <div class="cell"></div>
+        </div>
+      </div>
     </div>
     <script src="grid.js"></script>
   </body>
