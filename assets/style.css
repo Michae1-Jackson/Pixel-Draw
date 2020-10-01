@@ -27,7 +27,7 @@ h1 {
 .draw_button {
   height: 64px;
   width: 128px;
-  background-color: #4B0082;
+  background-color: #4b0082;
   color: gold;
   border: none;
   border-radius: 8px;
@@ -167,4 +167,36 @@ h1 {
 
 .navy {
   background-color: navy;
+}
+
+.NavajoWhite {
+  background-color: NavajoWhite;
+}
+
+.Crimson {
+  background-color: Crimson;
+}
+
+.Gray {
+  background-color: Gray;
+}
+
+.DarkSlateGray {
+  background-color: DarkSlateGray;
+}
+
+.AntiqueWhite {
+  background-color: AntiqueWhite;
+}
+
+.Teal {
+  background-color: Teal;
+}
+
+.MediumSlateBlue {
+  background-color: MediumSlateBlue;
+}
+
+.OrangeRed {
+  background-color: OrangeRed;
 }

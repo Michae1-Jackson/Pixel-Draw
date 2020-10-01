@@ -36,12 +36,14 @@ function gridDraw() {
 
   height = document.getElementById("grid_height").value;
   height = height ? height : "16";
+  width = document.getElementsById("grid_width").value;
+  width = width ? width : "32";
   size = document.getElementById("cell_size").value;
   size = size ? size : "24";
 
   if (
-    !height.match(/^[0-9]{1,2}$/)
-    // !size.match(/^([8,9]{1})|([1,2]{1}[0-9]{1})|([3]{1}[0,1,2]{1})$/)
+    !height.match(/^[0-9]{1,2}$/) ||
+    !size.match(/^([1]{1}[2-9]{1})|([2-4]{1}[0-9]{1})|([5]{1}[0-4]{1})$/)
   ) {
     window.alert("Please enter according to the required form");
     return;
@@ -52,6 +54,7 @@ function gridDraw() {
   }
 
   height = Number(height);
+  width = Number(width);
   size = Number(size);
 
   grid.setAttribute("style", ` width: ${2 * height * (size + 1)}px;`);
@@ -61,7 +64,7 @@ function gridDraw() {
     level.setAttribute("class", " level");
     level.setAttribute("style", `height: ${size + 1}px`);
 
-    for (let j = 0; j < 2 * height; j++) {
+    for (let j = 0; j < width; j++) {
       level.append(cellDraw(size));
     }
     grid.append(level);
