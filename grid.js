@@ -35,16 +35,13 @@ function gridDraw() {
   let grid = document.getElementById("_grid");
 
   height = document.getElementById("grid_height").value;
-  height = height ? height : "16";
+  height = height ? Number(height) : 24;
   width = document.getElementById("grid_width").value;
-  width = width ? width : "32";
+  width = width ? Number(width) : 48;
   size = document.getElementById("cell_size").value;
-  size = size ? size : "24";
+  size = size ? Number(size) : 16;
 
-  if (
-    !height.match(/^[0-9]{1,2}$/) ||
-    !size.match(/^([1]{1}[2-9]{1})|([2-4]{1}[0-9]{1})|([5]{1}[0-4]{1})$/)
-  ) {
+  if (1 <= height <= 64 || 1 <= width <= 96 || 12 <= size <= 54) {
     window.alert("Please enter according to the required form");
     return;
   }
@@ -53,16 +50,15 @@ function gridDraw() {
     grid.removeChild(grid.lastElementChild);
   }
 
-  height = Number(height);
-  width = Number(width);
-  size = Number(size);
-
   grid.setAttribute("style", ` width: ${2 * height * (size + 1)}px;`);
 
   for (let i = 0; i < height; i++) {
     let level = document.createElement("div");
     level.setAttribute("class", " level");
-    level.setAttribute("style", `height: ${size + 1}px`);
+    level.setAttribute(
+      "style",
+      `height: ${size + 1}px; width: ${width * size + 1}px;`
+    );
 
     for (let j = 0; j < width; j++) {
       level.append(cellDraw(size));
@@ -73,7 +69,7 @@ function gridDraw() {
   cellsActivate(pickedColor);
 }
 
-const drawCellButton = document.querySelector("button");
-drawCellButton.addEventListener("click", gridDraw);
+const drawGridButton = document.querySelector("button");
+drawGridButton.addEventListener("click", gridDraw);
 
 gridDraw();
