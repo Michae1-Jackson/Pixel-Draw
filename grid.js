@@ -41,7 +41,11 @@ function gridDraw() {
   size = document.getElementById("cell_size").value;
   size = size ? Number(size) : 16;
 
-  if (1 <= height <= 64 || 1 <= width <= 96 || 12 <= size <= 54) {
+  if (
+    (1 <= height && height <= 64) ||
+    (1 <= width && width <= 96) ||
+    (12 <= size && size <= 54)
+  ) {
     window.alert("Please enter according to the required form");
     return;
   }
