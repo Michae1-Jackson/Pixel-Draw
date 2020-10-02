@@ -17,7 +17,7 @@
     <div class="wrapper">
       <h1>PIXEL DRAW</h1>
       <p>
-        <b>GRID</b> height in cells [1 &mdash; 96]:
+        <b>GRID</b> height in cells [1 &mdash; 192]:
         <input id="grid_height" type="text" />
       </p>
       <p>
@@ -25,7 +25,7 @@
         <input id="grid_width" type="text" />
       </p>
       <p>
-        <b>GRID CELL</b> size in pixels [6 &mdash; 54]:
+        <b>GRID CELL</b> size in pixels [6 &mdash; 64]:
         <input id="cell_size" type="text" />
       </p>
       <div class="draw_button_wrap">
@@ -33,34 +33,39 @@
           <p>DRAW GRID</p>
         </button>
       </div>
+      <div class="palette">
+        <div id="picker_wrap">
+          <input type="color" name="Any color" id="any_color_picker" />
+        </div>
+        <div class="color_selection">
+          <div class="color_block" style="background-color: #ffffff"></div>
+          <div class="color_block" style="background-color: #c0c0c0"></div>
+          <div class="color_block" style="background-color: #808080"></div>
+          <div class="color_block" style="background-color: #000000"></div>
+          <div class="color_block" style="background-color: #800000"></div>
+          <div class="color_block" style="background-color: #ff0000"></div>
+          <div class="color_block" style="background-color: #dc143c"></div>
+          <div class="color_block" style="background-color: #ff4500"></div>
+          <div class="color_block" style="background-color: #ffd700"></div>
+          <div class="color_block" style="background-color: #ffff00"></div>
+          <div class="color_block" style="background-color: #faebd7"></div>
+          <div class="color_block" style="background-color: #ffdead"></div>
+          <div class="color_block" style="background-color: #00ff7f"></div>
+          <div class="color_block" style="background-color: #00ff00"></div>
+          <div class="color_block" style="background-color: #008000"></div>
+          <div class="color_block" style="background-color: #6b8e23"></div>
+          <div class="color_block" style="background-color: #8fbc8f"></div>
+          <div class="color_block" style="background-color: #008080"></div>
+          <div class="color_block" style="background-color: #00ffff"></div>
+          <div class="color_block" style="background-color: #7b68ee"></div>
+          <div class="color_block" style="background-color: #0000ff"></div>
+          <div class="color_block" style="background-color: #000080"></div>
+          <div class="color_block" style="background-color: #800080"></div>
+          <div class="color_block" style="background-color: #ff00ff"></div>
+        </div>
+      </div>
     </div>
-    <div class="color_picker">
-      <div class="color_block black"></div>
-      <div class="color_block silver"></div>
-      <div class="color_block white"></div>
-      <div class="color_block fuchsia"></div>
-      <div class="color_block purple"></div>
-      <div class="color_block red"></div>
-      <div class="color_block maroon"></div>
-      <div class="color_block yellow"></div>
-      <div class="color_block gold"></div>
-      <div class="color_block olivedrab"></div>
-      <div class="color_block lime"></div>
-      <div class="color_block springgreen"></div>
-      <div class="color_block green"></div>
-      <div class="color_block aqua"></div>
-      <div class="color_block blue"></div>
-      <div class="color_block navy"></div>
-      <div class="color_block NavajoWhite"></div>
-      <div class="color_block Crimson"></div>
-      <div class="color_block Gray"></div>
-      <div class="color_block DarkSlateGray"></div>
-      <div class="color_block AntiqueWhite"></div>
-      <div class="color_block Teal"></div>
-      <div class="color_block MediumSlateBlue"></div>
-      <div class="color_block OrangeRed"></div>
-    </div>
-    <div class="grid_wrap">
+    <div id="grid_wrap">
       <div id="_grid">
         <div class="level">
           <div class="cell"></div>
