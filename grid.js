@@ -1,12 +1,14 @@
 var pickedColor = "#000000";
+var gridVisibility = 1;
 var grid = document.getElementById("_grid");
 var cells = document.getElementsByClassName("cell");
 var colors = document.getElementsByClassName("color_block");
 var any_color = document.getElementById("any_color_picker");
-var picked_color_block = document.getElementById("picker_wrap");
+var picker_wrap = document.getElementById("picker_wrap");
 var brush = document.getElementById("brush");
 var filling = document.getElementById("filling");
 var pipette = document.getElementById("pipette");
+var gridSwitch = document.getElementById("switch_grid_vis");
 
 function toolHandler(tool) {
   switch (tool) {
@@ -24,7 +26,7 @@ function toolHandler(tool) {
 
 function cellCreate(size) {
   let cell = document.createElement("div");
-  cell.setAttribute("class", "cell");
+  cell.setAttribute("class", "cell gridVis");
   cell.style.width = `${size}px`;
   cell.style.height = `${size}px`;
   cell.style.backgroundColor = "rgb(255, 255, 255)";
@@ -33,11 +35,11 @@ function cellCreate(size) {
 
 function gridCreate() {
   height = document.getElementById("grid_height").value;
-  height = height ? Number(height) : 24;
+  height = height ? Number(height) : 96;
   width = document.getElementById("grid_width").value;
-  width = width ? Number(width) : 48;
+  width = width ? Number(width) : 96;
   size = document.getElementById("cell_size").value;
-  size = size ? Number(size) : 20;
+  size = size ? Number(size) : 12;
   if (
     !(1 <= height && height <= 192) ||
     !(1 <= width && width <= 192) ||
@@ -152,6 +154,20 @@ function switchOnPipette() {
   grid.className = "pipette";
 }
 
+function switchGridVis() {
+  if (gridVisibility) {
+    gridVisibility = 0;
+    for (let cell of cells) {
+      cell.classList.remove("gridVis");
+    }
+  } else {
+    gridVisibility = 1;
+    for (let cell of cells) {
+      cell.setAttribute("class", "cell gridVis");
+    }
+  }
+}
+
 function rgbToHex(rgb) {
   let hex = rgb.slice(4, -1).split(", ");
   hex = hex.map(Number).map((i) => i.toString(16));
@@ -178,6 +194,7 @@ function getColor() {
   filling.addEventListener("mousedown", switchOnFilling);
   brush.addEventListener("mousedown", switchOnBrush);
   pipette.addEventListener("mousedown", switchOnPipette);
+  gridSwitch.addEventListener("mousedown", switchGridVis);
   switchOnBrush();
   gridCreate();
 })();

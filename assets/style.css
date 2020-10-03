@@ -85,7 +85,7 @@ h1 {
 
 .tools {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   align-items: center;
   justify-items: center;
   margin-top: 1.5rem;
@@ -115,6 +115,21 @@ h1 {
 
 #pipette {
   background-image: url("../assets/images/pipette-lab-svgrepo-com.svg");
+}
+
+#switch_grid_vis {
+  height: 5rem;
+  width: 100px;
+  background-color: goldenrod;
+  border: solid 1px purple;
+  border-radius: 16px;
+  outline: none;
+  transition: transform 0.2s;
+}
+
+#switch_grid_vis:hover {
+  transform: scale(1.2);
+  cursor: pointer
 }
 
 .palette {
@@ -214,7 +229,6 @@ h1 {
 .cell {
   display: inline-block;
   background-color: #ffffff;
-  box-shadow: 0 0 1px 0 black;
   -webkit-transition: -webkit-opacity 0.07s, -webkit-transform 0.07s;
   transition: opacity 0.07s, transform 0.07s;
 }
@@ -224,4 +238,8 @@ h1 {
   opacity: 0.8;
   box-shadow: 0 0 0 0.8px black;
   border-radius: 1px;
+}
+
+.gridVis {
+  box-shadow: 0 0 1px 0 black;
 }
