@@ -17,56 +17,54 @@
     <div class="wrapper">
       <h1>PIXEL DRAW</h1>
       <div class="params">
-        <p class="param_input">
-          <b>GRID</b> height in cells
-        </p>
-          <input id="grid_height" type="text" placeholder=" 1 &mdash; 192"/>
-        <p class="param_input">
-          <b>GRID</b> width in cells
-        </p>
-          <input id="grid_width" type="text" placeholder=" 1 &mdash; 192"/>
-        <p class="param_input">
-          <b>GRID CELL</b> size in pixels
-        </p>
-          <input id="cell_size" type="text" placeholder=" 6 &mdash; 64"/>
+        <p class="param_input"><b>GRID</b> height in cells</p>
+        <input id="grid_height" type="text" placeholder=" 1 &mdash; 192" />
+        <p class="param_input"><b>GRID</b> width in cells</p>
+        <input id="grid_width" type="text" placeholder=" 1 &mdash; 192" />
+        <p class="param_input"><b>GRID CELL</b> size in pixels</p>
+        <input id="cell_size" type="text" placeholder=" 6 &mdash; 64" />
       </div>
-      <div class="draw_button_wrap">
-        <button class="draw_button">
+      <div id="save_button">
+        <p>S  A  V  E</p>
+      </div>
+      <div id="load_button">
+        <p>L  O  A  D</p>
+      </div>
+      <div class="create_button_wrap">
+        <button class="create_button" id="create_grid">
           <p>DRAW GRID</p>
         </button>
       </div>
       <div class="palette">
+        <div class="color_block" style="background-color: #ffffff"></div>
+        <div class="color_block" style="background-color: #c0c0c0"></div>
+        <div class="color_block" style="background-color: #808080"></div>
+        <div class="color_block" style="background-color: #000000"></div>
+        <div class="color_block" style="background-color: #800000"></div>
+        <div class="color_block" style="background-color: #ff0000"></div>
+        <div class="color_block" style="background-color: #dc143c"></div>
+        <div class="color_block" style="background-color: #ff4500"></div>
+        <div class="color_block" style="background-color: #ffd700"></div>
+        <div class="color_block" style="background-color: #ffff00"></div>
+        <div class="color_block" style="background-color: #faebd7"></div>
+        <div class="color_block" style="background-color: #ffdead"></div>
+        <div class="color_block" style="background-color: #00ff7f"></div>
+        <div class="color_block" style="background-color: #00ff00"></div>
+        <div class="color_block" style="background-color: #008000"></div>
+        <div class="color_block" style="background-color: #6b8e23"></div>
+        <div class="color_block" style="background-color: #8fbc8f"></div>
+        <div class="color_block" style="background-color: #008080"></div>
+        <div class="color_block" style="background-color: #00ffff"></div>
+        <div class="color_block" style="background-color: #7b68ee"></div>
+        <div class="color_block" style="background-color: #0000ff"></div>
+        <div class="color_block" style="background-color: #000080"></div>
+        <div class="color_block" style="background-color: #800080"></div>
+        <div class="color_block" style="background-color: #ff00ff"></div>
+      </div>
+      <div class="tools">
         <div id="picker_wrap">
           <input type="color" name="Any color" id="any_color_picker" />
         </div>
-        <div class="color_selection">
-          <div class="color_block" style="background-color: #ffffff"></div>
-          <div class="color_block" style="background-color: #c0c0c0"></div>
-          <div class="color_block" style="background-color: #808080"></div>
-          <div class="color_block" style="background-color: #000000"></div>
-          <div class="color_block" style="background-color: #800000"></div>
-          <div class="color_block" style="background-color: #ff0000"></div>
-          <div class="color_block" style="background-color: #dc143c"></div>
-          <div class="color_block" style="background-color: #ff4500"></div>
-          <div class="color_block" style="background-color: #ffd700"></div>
-          <div class="color_block" style="background-color: #ffff00"></div>
-          <div class="color_block" style="background-color: #faebd7"></div>
-          <div class="color_block" style="background-color: #ffdead"></div>
-          <div class="color_block" style="background-color: #00ff7f"></div>
-          <div class="color_block" style="background-color: #00ff00"></div>
-          <div class="color_block" style="background-color: #008000"></div>
-          <div class="color_block" style="background-color: #6b8e23"></div>
-          <div class="color_block" style="background-color: #8fbc8f"></div>
-          <div class="color_block" style="background-color: #008080"></div>
-          <div class="color_block" style="background-color: #00ffff"></div>
-          <div class="color_block" style="background-color: #7b68ee"></div>
-          <div class="color_block" style="background-color: #0000ff"></div>
-          <div class="color_block" style="background-color: #000080"></div>
-          <div class="color_block" style="background-color: #800080"></div>
-          <div class="color_block" style="background-color: #ff00ff"></div>
-        </div>
-      </div>
-      <div class="tools">
         <div id="brush"></div>
         <div id="filling"></div>
         <div id="pipette"></div>

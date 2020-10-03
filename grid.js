@@ -1,5 +1,6 @@
-var pickedColor = "#000000";
-var gridVisibility = 1;
+const createGridButton = document.getElementById("create_grid");
+const savePictureButton = document.getElementById("save_button");
+const loadPictureButton = document.getElementById("load_button");
 var grid = document.getElementById("_grid");
 var cells = document.getElementsByClassName("cell");
 var colors = document.getElementsByClassName("color_block");
@@ -168,6 +169,16 @@ function switchGridVis() {
   }
 }
 
+function savePicture() {
+  let pictureName = "Test Picture";
+  localStorage.setItem(pictureName, grid.outerHTML);
+}
+
+function loadPicture() {
+  let pictureName = "Test Picture";
+  grid.innerHTML = localStorage.getItem(pictureName);
+}
+
 function rgbToHex(rgb) {
   let hex = rgb.slice(4, -1).split(", ");
   hex = hex.map(Number).map((i) => i.toString(16));
@@ -183,8 +194,10 @@ function getColor() {
 }
 
 (function onStart() {
-  const drawGridButton = document.querySelector("button");
-  drawGridButton.addEventListener("click", gridCreate);
+  createGridButton.addEventListener("click", gridCreate);
+  savePictureButton.addEventListener("click", savePicture);
+  loadPictureButton.addEventListener("click", loadPicture);
+  localStorage.clear();
   for (let color of colors) {
     color.addEventListener("mousedown", getColor);
   }
