@@ -99,7 +99,6 @@ h1 {
   background-color: blue;
 }
 
-
 #load_button {
   background-color: green;
 }
@@ -184,7 +183,7 @@ h1 {
 
 .tools > div:hover {
   transform: scale(1.2);
-  cursor: pointer
+  cursor: pointer;
 }
 
 #brush_icon {
@@ -223,7 +222,7 @@ h1 {
 
 #switch_grid_vis:hover {
   transform: scale(1.2);
-  cursor: pointer
+  cursor: pointer;
 }
 
 #picker_wrap {

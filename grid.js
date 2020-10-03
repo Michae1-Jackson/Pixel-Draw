@@ -15,6 +15,7 @@ var cells = document.getElementsByClassName("cell");
 var colors = document.getElementsByClassName("color_block");
 
 (function onStart() {
+  grid_wrap.style.visibility = "hidden";
   createGridButton.addEventListener("click", gridCreate);
   savePictureButton.addEventListener("mousedown", savePicture);
   loadPictureButton.addEventListener("mousedown", loadPicture);
@@ -58,6 +59,7 @@ function cellCreate(size) {
 }
 
 function gridCreate() {
+  grid_wrap.style.visibility = "hidden";
   height = document.getElementById("grid_height").value;
   height = height ? Number(height) : 96;
   width = document.getElementById("grid_width").value;
@@ -92,6 +94,7 @@ function gridCreate() {
     grid.appendChild(level);
   }
   grid_wrap.appendChild(grid);
+  grid_wrap.style.visibility = "visible";
   toolHandler(grid.className);
 }
 
