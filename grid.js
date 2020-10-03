@@ -2,18 +2,37 @@ const createGridButton = document.getElementById("create_grid");
 const savePictureButton = document.getElementById("save_button");
 const loadPictureButton = document.getElementById("load_button");
 const clearHistoryButton = document.getElementById("clear_history");
+const anyColorButton = document.getElementById("any_color_picker");
+const brushButton = document.getElementById("brush_icon");
+const fillingButton = document.getElementById("filling_icon");
+const pipetteButton = document.getElementById("pipette_icon");
+const gridVisButton = document.getElementById("switch_grid_vis");
 var pickedColor = "#000000";
 var gridVisibility = 1;
 var grid = document.getElementById("_grid");
 var grid_wrap = document.getElementById("grid_wrap");
 var cells = document.getElementsByClassName("cell");
 var colors = document.getElementsByClassName("color_block");
-var any_color = document.getElementById("any_color_picker");
-var picker_wrap = document.getElementById("picker_wrap");
-var brush = document.getElementById("brush_icon");
-var filling = document.getElementById("filling_icon");
-var pipette = document.getElementById("pipette_icon");
-var gridSwitch = document.getElementById("switch_grid_vis");
+
+(function onStart() {
+  createGridButton.addEventListener("click", gridCreate);
+  savePictureButton.addEventListener("mousedown", savePicture);
+  loadPictureButton.addEventListener("mousedown", loadPicture);
+  clearHistoryButton.addEventListener("mousedown", clearHistory);
+  fillingButton.addEventListener("mousedown", switchOnFilling);
+  brushButton.addEventListener("mousedown", switchOnBrush);
+  pipetteButton.addEventListener("mousedown", switchOnPipette);
+  gridVisButton.addEventListener("mousedown", switchGridVis);
+  loadPictureButton.disabled = localStorage.length ? false : true;
+  for (let color of colors) {
+    color.addEventListener("mousedown", getColor);
+  }
+  anyColorButton.addEventListener("input", (event) => {
+    pickedColor = event.target.value;
+  });
+  switchOnBrush();
+  gridCreate();
+})();
 
 function toolHandler(tool) {
   switch (tool) {
@@ -38,7 +57,7 @@ function cellCreate(size) {
   return cell;
 }
 
-function gridCreate(height, width, size) {
+function gridCreate() {
   height = document.getElementById("grid_height").value;
   height = height ? Number(height) : 96;
   width = document.getElementById("grid_width").value;
@@ -215,26 +234,5 @@ function rgbToHex(rgb) {
 
 function getColor() {
   pickedColor = this.style.backgroundColor;
-  any_color.value = rgbToHex(pickedColor);
+  anyColorButton.value = rgbToHex(pickedColor);
 }
-
-(function onStart() {
-  createGridButton.addEventListener("click", gridCreate);
-  savePictureButton.addEventListener("mousedown", savePicture);
-  loadPictureButton.addEventListener("mousedown", loadPicture);
-  clearHistoryButton.addEventListener("mousedown", clearHistory);
-  filling.addEventListener("mousedown", switchOnFilling);
-  brush.addEventListener("mousedown", switchOnBrush);
-  pipette.addEventListener("mousedown", switchOnPipette);
-  gridSwitch.addEventListener("mousedown", switchGridVis);
-  console.log(localStorage);
-  loadPictureButton.disabled = localStorage.length ? false : true;
-  for (let color of colors) {
-    color.addEventListener("mousedown", getColor);
-  }
-  any_color.addEventListener("input", (event) => {
-    pickedColor = event.target.value;
-  });
-  switchOnBrush();
-  gridCreate();
-})();
