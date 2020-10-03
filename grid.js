@@ -11,13 +11,13 @@ var pipette = document.getElementById("pipette");
 function toolHandler(tool) {
   switch (tool) {
     case "brush":
-      console.log(tool);
+      switchOnBrush();
       break;
     case "filling":
-      console.log(tool);
+      switchOnFilling();
       break;
     case "pipette":
-      console.log(tool);
+      switchOnPipette();
       break;
   }
 }
