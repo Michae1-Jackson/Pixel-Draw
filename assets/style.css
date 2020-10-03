@@ -64,41 +64,56 @@ h1 {
   opacity: 1;
 }
 
-/* Save Load Section */
+/* Storage Manage */
+
+.storage_manage {
+  margin: 1rem auto;
+  width: 900px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+}
+
+#save_button,
+#load_button,
+#clear_history {
+  display: block;
+  height: 5rem;
+  width: 200px;
+  font-size: 1.5rem;
+  color: goldenrod;
+  border-radius: 1rem;
+  outline: none;
+  transition: transform 0.2s, background-color 0.1s ease-in;
+}
+
+#save_button:hover,
+#load_button:hover,
+#clear_history:hover {
+  transform: scale(1.15);
+  cursor: pointer;
+}
 
 #save_button {
-  height: 200px;
-  width: 600px;
-  margin-left: auto;
-  margin-right: auto;
   background-color: blue;
 }
 
-#save_button:hover {
-  cursor: pointer;
-}
 
 #load_button {
-  height: 200px;
-  width: 600px;
-  margin-left: auto;
-  margin-right: auto;
   background-color: green;
 }
 
-#load_button:hover {
-  cursor: pointer;
+#clear_history {
+  background-color: red;
 }
 
 /* Grid Create Button */
 
-.create_button_wrap {
-  width: 22.5rem;
+#create_grid {
+  display: block;
   margin-left: auto;
   margin-right: auto;
-}
-
-.create_button {
   height: 5rem;
   width: 22.5rem;
   font-size: 1.5rem;
@@ -110,12 +125,12 @@ h1 {
   transition: transform 0.2s, background-color 0.1s ease-in;
 }
 
-.create_button:hover {
+#create_grid:hover {
   transform: scale(1.15);
   cursor: pointer;
 }
 
-.create_button:active {
+#create_grid:active {
   background-color: #800000;
 }
 

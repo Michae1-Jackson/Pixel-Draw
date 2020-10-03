@@ -1,6 +1,7 @@
 const createGridButton = document.getElementById("create_grid");
 const savePictureButton = document.getElementById("save_button");
 const loadPictureButton = document.getElementById("load_button");
+const clearHistoryButton = document.getElementById("clear_history");
 var pickedColor = "#000000";
 var gridVisibility = 1;
 var grid = document.getElementById("_grid");
@@ -179,6 +180,7 @@ function switchGridVis() {
 function savePicture() {
   let pictureName = "Test Picture";
   localStorage.setItem(pictureName, grid.outerHTML);
+  loadPictureButton.disabled = false;
 }
 
 function loadPicture() {
@@ -197,6 +199,11 @@ function loadPicture() {
   toolHandler(currentTool);
 }
 
+function clearHistory() {
+  localStorage.clear();
+  loadPictureButton.disabled = true;
+}
+
 function rgbToHex(rgb) {
   let hex = rgb.slice(4, -1).split(", ");
   hex = hex.map(Number).map((i) => i.toString(16));
@@ -213,19 +220,21 @@ function getColor() {
 
 (function onStart() {
   createGridButton.addEventListener("click", gridCreate);
-  savePictureButton.addEventListener("click", savePicture);
-  loadPictureButton.addEventListener("click", loadPicture);
-  localStorage.clear();
+  savePictureButton.addEventListener("mousedown", savePicture);
+  loadPictureButton.addEventListener("mousedown", loadPicture);
+  clearHistoryButton.addEventListener("mousedown", clearHistory);
+  filling.addEventListener("mousedown", switchOnFilling);
+  brush.addEventListener("mousedown", switchOnBrush);
+  pipette.addEventListener("mousedown", switchOnPipette);
+  gridSwitch.addEventListener("mousedown", switchGridVis);
+  console.log(localStorage);
+  loadPictureButton.disabled = localStorage.length ? false : true;
   for (let color of colors) {
     color.addEventListener("mousedown", getColor);
   }
   any_color.addEventListener("input", (event) => {
     pickedColor = event.target.value;
   });
-  filling.addEventListener("mousedown", switchOnFilling);
-  brush.addEventListener("mousedown", switchOnBrush);
-  pipette.addEventListener("mousedown", switchOnPipette);
-  gridSwitch.addEventListener("mousedown", switchGridVis);
   switchOnBrush();
   gridCreate();
 })();
