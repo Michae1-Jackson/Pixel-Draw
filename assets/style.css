@@ -172,16 +172,28 @@ h1 {
   cursor: pointer
 }
 
-#brush {
+#brush_icon {
   background-image: url("../assets/images/brush+general+illustrate+paint+paint+brush+painting+icon-1320183162445596643_0.svg");
 }
 
-#filling {
+#filling_icon {
   background-image: url("../assets/images/Inkscape_icons_color_fill.svg");
 }
 
-#pipette {
+#pipette_icon {
   background-image: url("../assets/images/pipette-lab-svgrepo-com.svg");
+}
+
+.brush {
+  cursor: crosshair;
+}
+
+.filling {
+  cursor: cell;
+}
+
+.pipette {
+  cursor: help;
 }
 
 #switch_grid_vis {
@@ -231,7 +243,6 @@ h1 {
 
 #grid_wrap {
   display: block;
-  width: fit-content;
   margin: 0 auto 2rem auto;
   padding: 1rem;
   background-color: #4b0082;
@@ -246,18 +257,6 @@ h1 {
   -moz-user-select: none;
   user-select: none;
   background-color: whitesmoke;
-}
-
-.brush {
-  cursor: crosshair;
-}
-
-.filling {
-  cursor: cell;
-}
-
-.pipette {
-  cursor: help;
 }
 
 .cell {

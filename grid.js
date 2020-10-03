@@ -1,14 +1,17 @@
 const createGridButton = document.getElementById("create_grid");
 const savePictureButton = document.getElementById("save_button");
 const loadPictureButton = document.getElementById("load_button");
+var pickedColor = "#000000";
+var gridVisibility = 1;
 var grid = document.getElementById("_grid");
+var grid_wrap = document.getElementById("grid_wrap");
 var cells = document.getElementsByClassName("cell");
 var colors = document.getElementsByClassName("color_block");
 var any_color = document.getElementById("any_color_picker");
 var picker_wrap = document.getElementById("picker_wrap");
-var brush = document.getElementById("brush");
-var filling = document.getElementById("filling");
-var pipette = document.getElementById("pipette");
+var brush = document.getElementById("brush_icon");
+var filling = document.getElementById("filling_icon");
+var pipette = document.getElementById("pipette_icon");
 var gridSwitch = document.getElementById("switch_grid_vis");
 
 function toolHandler(tool) {
@@ -34,7 +37,7 @@ function cellCreate(size) {
   return cell;
 }
 
-function gridCreate() {
+function gridCreate(height, width, size) {
   height = document.getElementById("grid_height").value;
   height = height ? Number(height) : 96;
   width = document.getElementById("grid_width").value;
@@ -52,6 +55,9 @@ function gridCreate() {
   while (grid.lastElementChild) {
     grid.removeChild(grid.lastElementChild);
   }
+  grid_wrap.removeChild(grid_wrap.lastChild);
+  grid_wrap.style.width = `${width * size}px`;
+  grid_wrap.style.height = `${height * size}px`;
   grid.style.width = `${width * size}px`;
   grid.style.height = `${height * size}px`;
   for (let i = 0; i < height; i++) {
@@ -61,10 +67,11 @@ function gridCreate() {
     level.style.height = `${size}px`;
     level.style.lineHeight = `${0}`;
     for (let j = 0; j < width; j++) {
-      level.append(cellCreate(size));
+      level.appendChild(cellCreate(size));
     }
-    grid.append(level);
+    grid.appendChild(level);
   }
+  grid_wrap.appendChild(grid);
   toolHandler(grid.className);
 }
 
@@ -176,7 +183,18 @@ function savePicture() {
 
 function loadPicture() {
   let pictureName = "Test Picture";
-  grid.innerHTML = localStorage.getItem(pictureName);
+  grid_wrap.removeChild(grid_wrap.lastChild);
+  let grid_wrapOnLoad = document.createElement("div");
+  grid_wrapOnLoad.innerHTML = localStorage.getItem(pictureName);
+  let gridOnLoad = grid_wrapOnLoad.firstChild;
+  grid_wrap.style.width = gridOnLoad.style.width;
+  grid_wrap.style.height = gridOnLoad.style.height;
+  grid.style.width = gridOnLoad.style.width;
+  grid.style.height = gridOnLoad.style.height;
+  let currentTool = grid.className;
+  grid = gridOnLoad;
+  grid_wrap.appendChild(grid);
+  toolHandler(currentTool);
 }
 
 function rgbToHex(rgb) {
