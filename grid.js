@@ -15,7 +15,7 @@ var cells = document.getElementsByClassName("cell");
 var colors = document.getElementsByClassName("color_block");
 
 (function onStart() {
-  grid_wrap.style.visibility = "hidden";
+  grid_wrap.style.display = "none";
   createGridButton.addEventListener("click", gridCreate);
   savePictureButton.addEventListener("mousedown", savePicture);
   loadPictureButton.addEventListener("mousedown", loadPicture);
@@ -95,6 +95,7 @@ function gridCreate() {
   }
   grid_wrap.appendChild(grid);
   grid_wrap.style.visibility = "visible";
+  grid_wrap.style.display = "block";
   toolHandler(grid.className);
 }
 
