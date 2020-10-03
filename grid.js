@@ -3,33 +3,23 @@ var grid = document.getElementById("_grid");
 var cells = document.getElementsByClassName("cell");
 var colors = document.getElementsByClassName("color_block");
 var any_color = document.getElementById("any_color_picker");
-var picked_color_block = document.getElementById("picked_wrap");
+var picked_color_block = document.getElementById("picker_wrap");
+var brush = document.getElementById("brush");
+var filling = document.getElementById("filling");
+var pipette = document.getElementById("pipette");
 
-function paint() {
-  this.style.backgroundColor = pickedColor;
-}
-
-function startDrawing() {
-  for (let cell of cells) {
-    cell.addEventListener("mouseover", paint);
+function toolHandler(tool) {
+  switch (tool) {
+    case "brush":
+      console.log(tool);
+      break;
+    case "filling":
+      console.log(tool);
+      break;
+    case "pipette":
+      console.log(tool);
+      break;
   }
-}
-
-function stopDrawing() {
-  for (let cell of cells) {
-    cell.removeEventListener("mouseover", paint);
-  }
-}
-
-function cellsActivate() {
-  for (let cell of cells) {
-    cell.addEventListener("mousedown", paint);
-  }
-  grid.addEventListener("mouseenter", function () {
-    grid.addEventListener("mousedown", startDrawing);
-    grid.addEventListener("mouseup", stopDrawing);
-    grid.addEventListener("mouseleave", stopDrawing);
-  });
 }
 
 function cellCreate(size) {
@@ -37,10 +27,11 @@ function cellCreate(size) {
   cell.setAttribute("class", "cell");
   cell.style.width = `${size}px`;
   cell.style.height = `${size}px`;
+  cell.style.backgroundColor = "rgb(255, 255, 255)";
   return cell;
 }
 
-function gridDraw() {
+function gridCreate() {
   height = document.getElementById("grid_height").value;
   height = height ? Number(height) : 24;
   width = document.getElementById("grid_width").value;
@@ -71,7 +62,94 @@ function gridDraw() {
     }
     grid.append(level);
   }
-  cellsActivate();
+  toolHandler(grid.className);
+}
+
+function toolSwitcher() {
+  grid.removeEventListener("mouseenter", startBrushPainting);
+  grid.removeEventListener("mousedown", startDrawing);
+  for (let cell of cells) {
+    cell.removeEventListener("mousedown", getColor);
+    cell.removeEventListener("mousedown", startFilling);
+    cell.removeEventListener("mousedown", paint);
+  }
+}
+
+function paint() {
+  this.style.backgroundColor = pickedColor;
+}
+
+function startDrawing() {
+  for (let cell of cells) {
+    cell.addEventListener("mouseover", paint);
+  }
+}
+
+function stopDrawing() {
+  for (let cell of cells) {
+    cell.removeEventListener("mouseover", paint);
+  }
+}
+
+function startBrushPainting() {
+  grid.addEventListener("mousedown", startDrawing);
+  grid.addEventListener("mouseup", stopDrawing);
+  grid.addEventListener("mouseleave", stopDrawing);
+}
+
+function switchOnBrush() {
+  toolSwitcher();
+  for (let cell of cells) {
+    cell.addEventListener("mousedown", paint);
+  }
+  grid.addEventListener("mouseenter", startBrushPainting);
+  grid.className = "brush";
+}
+
+function getNum(el) {
+  let n = 0;
+  while ((el = el.previousSibling)) n++;
+  return n;
+}
+
+function nodeFill(block, areaColor) {
+  if (block.style.backgroundColor == pickedColor) return;
+  if (block.style.backgroundColor != areaColor) return;
+  block.style.backgroundColor = pickedColor;
+  let lvlPos = getNum(block);
+  if (block.parentNode.nextSibling) {
+    let lowerBlock = block.parentNode.nextSibling.childNodes[lvlPos];
+    if (lowerBlock) nodeFill(lowerBlock, areaColor);
+  }
+  if (block.parentNode.previousSibling) {
+    let upperBlock = block.parentNode.previousSibling.childNodes[lvlPos];
+    if (upperBlock) nodeFill(upperBlock, areaColor);
+  }
+  let leftBlock = block.previousSibling;
+  let rightBlock = block.nextSibling;
+  if (leftBlock) nodeFill(leftBlock, areaColor);
+  if (rightBlock) nodeFill(rightBlock, areaColor);
+}
+
+function startFilling(event) {
+  areaColor = event.currentTarget.style.backgroundColor;
+  nodeFill(event.currentTarget, areaColor);
+}
+
+function switchOnFilling() {
+  toolSwitcher();
+  for (let cell of cells) {
+    cell.addEventListener("mousedown", startFilling);
+  }
+  grid.className = "filling";
+}
+
+function switchOnPipette() {
+  toolSwitcher();
+  for (let cell of cells) {
+    cell.addEventListener("mousedown", getColor);
+  }
+  grid.className = "pipette";
 }
 
 function rgbToHex(rgb) {
@@ -83,21 +161,23 @@ function rgbToHex(rgb) {
   return `#${rHex}${gHex}${bHex}`;
 }
 
-function newColor() {
+function getColor() {
   pickedColor = this.style.backgroundColor;
-  cellsActivate();
   any_color.value = rgbToHex(pickedColor);
 }
 
 (function onStart() {
   const drawGridButton = document.querySelector("button");
-  drawGridButton.addEventListener("click", gridDraw);
+  drawGridButton.addEventListener("click", gridCreate);
   for (let color of colors) {
-    color.addEventListener("mousedown", newColor);
+    color.addEventListener("mousedown", getColor);
   }
-  any_color.addEventListener("input", function (event) {
+  any_color.addEventListener("input", (event) => {
     pickedColor = event.target.value;
-    cellsActivate();
   });
-  gridDraw();
+  filling.addEventListener("mousedown", switchOnFilling);
+  brush.addEventListener("mousedown", switchOnBrush);
+  pipette.addEventListener("mousedown", switchOnPipette);
+  switchOnBrush();
+  gridCreate();
 })();

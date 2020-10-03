@@ -16,18 +16,20 @@
   <body>
     <div class="wrapper">
       <h1>PIXEL DRAW</h1>
-      <p>
-        <b>GRID</b> height in cells [1 &mdash; 192]:
-        <input id="grid_height" type="text" />
-      </p>
-      <p>
-        <b>GRID</b> width in cells [1 &mdash; 192]:
-        <input id="grid_width" type="text" />
-      </p>
-      <p>
-        <b>GRID CELL</b> size in pixels [6 &mdash; 64]:
-        <input id="cell_size" type="text" />
-      </p>
+      <div class="params">
+        <p class="param_input">
+          <b>GRID</b> height in cells
+        </p>
+          <input id="grid_height" type="text" placeholder=" 1 &mdash; 192"/>
+        <p class="param_input">
+          <b>GRID</b> width in cells
+        </p>
+          <input id="grid_width" type="text" placeholder=" 1 &mdash; 192"/>
+        <p class="param_input">
+          <b>GRID CELL</b> size in pixels
+        </p>
+          <input id="cell_size" type="text" placeholder=" 6 &mdash; 64"/>
+      </div>
       <div class="draw_button_wrap">
         <button class="draw_button">
           <p>DRAW GRID</p>
@@ -62,6 +64,17 @@
           <div class="color_block" style="background-color: #000080"></div>
           <div class="color_block" style="background-color: #800080"></div>
           <div class="color_block" style="background-color: #ff00ff"></div>
+        </div>
+      </div>
+      <div class="tools">
+        <div id="brush">
+          <!-- <p>brush</p> -->
+        </div>
+        <div id="filling">
+          <!-- <p>filling</p> -->
+        </div>
+        <div id="pipette">
+          <!-- <p>pipette</p> -->
         </div>
       </div>
     </div>
