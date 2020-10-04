@@ -8,7 +8,7 @@ const fillingButton = document.getElementById("filling_icon");
 const pipetteButton = document.getElementById("pipette_icon");
 const gridVisButton = document.getElementById("switch_grid_vis");
 var pickedColor = "#000000";
-var areaColor = "#FFFFFF";
+var paintableColor = "#FFFFFF";
 var gridVisibility = 1;
 var drawing = 0;
 var grid = document.getElementById("_grid");
@@ -138,54 +138,51 @@ function switchOnBrush() {
   grid.className = "brush";
 }
 
-function getNum(el) {
-  let n = 0;
-  while ((el = el.previousSibling)) n++;
-  return n;
-}
-
-class blockInfo {
-  constructor(x, y, down, left, up, right) {
-    this.x = x;
-    this.y = y;
-    this.down = down;
-    this.left = left;
-    this.up = up;
-    this.right = right;
-  }
+function getLocation(element) {
+  let elementLocation = 0;
+  while ((element = element.previousSibling)) elementLocation++;
+  return elementLocation;
 }
 
 function isFillable(block) {
   let bgCol = block.style.backgroundColor;
-  return bgCol != pickedColor || bgCol == areaColor;
+  return bgCol != pickedColor && bgCol == paintableColor;
 }
 
 function floodFill(block) {
   if (isFillable(block)) {
-    block.style.backgroundColor = pickedColor;
-    let x = getNum(block);
-    let y = getNum(block.parentNode);
-    startBlock = blockInfo(x, y, 0, 0, 0, 0);
-    let filledBlocks = [startBlock];
-    while (filledBlocks.length) {
-      if (block.parentNode.nextSibling) {
-        let lowerBlock = block.parentNode.nextSibling.childNodes[x];
-        floodFill(lowerBlock);
+    let loc, curBlock, curLevel, nextLevel, leftBlock, prevLevel, rightBlock;
+    let fillingBlocks = new Array(block);
+    while (fillingBlocks.length) {
+      curBlock = fillingBlocks.pop();
+      curBlock.style.backgroundColor = pickedColor;
+      loc = getLocation(curBlock);
+      curLevel = curBlock.parentNode;
+      rightBlock = curBlock.nextSibling;
+      nextLevel = curLevel.nextSibling;
+      leftBlock = curBlock.previousSibling;
+      prevLevel = curLevel.previousSibling;
+      if (
+        prevLevel.childNodes.length &&
+        isFillable(prevLevel.childNodes[loc])
+      ) {
+        fillingBlocks.push(prevLevel.childNodes[loc]);
       }
-      let leftBlock = block.previousSibling;
-      if (leftBlock) floodFill(leftBlock);
-      if (block.parentNode.previousSibling) {
-        let upperBlock = block.parentNode.previousSibling.childNodes[x];
-        floodFill(upperBlock);
+      if (leftBlock && isFillable(leftBlock)) {
+        fillingBlocks.push(leftBlock);
       }
-      let rightBlock = block.nextSibling;
-      if (rightBlock) floodFill(rightBlock);
+      if (nextLevel && isFillable(nextLevel.childNodes[loc])) {
+        fillingBlocks.push(nextLevel.childNodes[loc]);
+      }
+      if (rightBlock && isFillable(rightBlock)) {
+        fillingBlocks.push(rightBlock);
+      }
     }
   }
 }
 
 function startFilling(event) {
-  areaColor = event.currentTarget.style.backgroundColor;
+  paintableColor = event.currentTarget.style.backgroundColor;
   floodFill(event.currentTarget);
 }
 
