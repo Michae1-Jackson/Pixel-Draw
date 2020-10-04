@@ -8,7 +8,9 @@ const fillingButton = document.getElementById("filling_icon");
 const pipetteButton = document.getElementById("pipette_icon");
 const gridVisButton = document.getElementById("switch_grid_vis");
 var pickedColor = "#000000";
+var areaColor = "#FFFFFF";
 var gridVisibility = 1;
+var drawing = 0;
 var grid = document.getElementById("_grid");
 var grid_wrap = document.getElementById("grid_wrap");
 var cells = document.getElementsByClassName("cell");
@@ -24,9 +26,13 @@ var colors = document.getElementsByClassName("color_block");
   brushButton.addEventListener("mousedown", switchOnBrush);
   pipetteButton.addEventListener("mousedown", switchOnPipette);
   gridVisButton.addEventListener("mousedown", switchGridVis);
+  grid.addEventListener("mouseup", stopDrawing);
+  grid.addEventListener("mouseleave", stopDrawing);
   loadPictureButton.disabled = localStorage.length ? false : true;
   for (let color of colors) {
-    color.addEventListener("mousedown", getColor);
+    color.addEventListener("mousedown", (event) =>
+      getColor(event.currentTarget)
+    );
   }
   anyColorButton.addEventListener("input", (event) => {
     pickedColor = event.target.value;
@@ -100,43 +106,35 @@ function gridCreate() {
 }
 
 function toolSwitcher() {
-  grid.removeEventListener("mouseenter", startBrushPainting);
-  grid.removeEventListener("mousedown", startDrawing);
   for (let cell of cells) {
-    cell.removeEventListener("mousedown", getColor);
+    cell.removeEventListener("mouseover", changeColor);
+    cell.removeEventListener("mousedown", startDrawing);
+    cell.removeEventListener("mousedown", absorption);
     cell.removeEventListener("mousedown", startFilling);
-    cell.removeEventListener("mousedown", paint);
   }
 }
 
-function paint() {
-  this.style.backgroundColor = pickedColor;
+function changeColor() {
+  if (drawing) {
+    this.style.backgroundColor = pickedColor;
+  }
 }
 
 function startDrawing() {
-  for (let cell of cells) {
-    cell.addEventListener("mouseover", paint);
-  }
+  drawing = 1;
+  this.style.backgroundColor = pickedColor;
 }
 
 function stopDrawing() {
-  for (let cell of cells) {
-    cell.removeEventListener("mouseover", paint);
-  }
-}
-
-function startBrushPainting() {
-  grid.addEventListener("mousedown", startDrawing);
-  grid.addEventListener("mouseup", stopDrawing);
-  grid.addEventListener("mouseleave", stopDrawing);
+  drawing = 0;
 }
 
 function switchOnBrush() {
   toolSwitcher();
   for (let cell of cells) {
-    cell.addEventListener("mousedown", paint);
+    cell.addEventListener("mousedown", startDrawing);
+    cell.addEventListener("mouseover", changeColor);
   }
-  grid.addEventListener("mouseenter", startBrushPainting);
   grid.className = "brush";
 }
 
@@ -146,28 +144,49 @@ function getNum(el) {
   return n;
 }
 
-function nodeFill(block, areaColor) {
-  if (block.style.backgroundColor == pickedColor) return;
-  if (block.style.backgroundColor != areaColor) return;
-  block.style.backgroundColor = pickedColor;
-  let lvlPos = getNum(block);
-  if (block.parentNode.nextSibling) {
-    let lowerBlock = block.parentNode.nextSibling.childNodes[lvlPos];
-    if (lowerBlock) nodeFill(lowerBlock, areaColor);
+class blockInfo {
+  constructor(x, y, down, left, up, right) {
+    this.x = x;
+    this.y = y;
+    this.down = down;
+    this.left = left;
+    this.up = up;
+    this.right = right;
   }
-  if (block.parentNode.previousSibling) {
-    let upperBlock = block.parentNode.previousSibling.childNodes[lvlPos];
-    if (upperBlock) nodeFill(upperBlock, areaColor);
+}
+
+function isFillable(block) {
+  let bgCol = block.style.backgroundColor;
+  return bgCol != pickedColor || bgCol == areaColor;
+}
+
+function floodFill(block) {
+  if (isFillable(block)) {
+    block.style.backgroundColor = pickedColor;
+    let x = getNum(block);
+    let y = getNum(block.parentNode);
+    startBlock = blockInfo(x, y, 0, 0, 0, 0);
+    let filledBlocks = [startBlock];
+    while (filledBlocks.length) {
+      if (block.parentNode.nextSibling) {
+        let lowerBlock = block.parentNode.nextSibling.childNodes[x];
+        floodFill(lowerBlock);
+      }
+      let leftBlock = block.previousSibling;
+      if (leftBlock) floodFill(leftBlock);
+      if (block.parentNode.previousSibling) {
+        let upperBlock = block.parentNode.previousSibling.childNodes[x];
+        floodFill(upperBlock);
+      }
+      let rightBlock = block.nextSibling;
+      if (rightBlock) floodFill(rightBlock);
+    }
   }
-  let leftBlock = block.previousSibling;
-  let rightBlock = block.nextSibling;
-  if (leftBlock) nodeFill(leftBlock, areaColor);
-  if (rightBlock) nodeFill(rightBlock, areaColor);
 }
 
 function startFilling(event) {
   areaColor = event.currentTarget.style.backgroundColor;
-  nodeFill(event.currentTarget, areaColor);
+  floodFill(event.currentTarget);
 }
 
 function switchOnFilling() {
@@ -178,10 +197,15 @@ function switchOnFilling() {
   grid.className = "filling";
 }
 
+function absorption() {
+  getColor(this);
+  switchOnBrush();
+}
+
 function switchOnPipette() {
   toolSwitcher();
   for (let cell of cells) {
-    cell.addEventListener("mousedown", getColor);
+    cell.addEventListener("mousedown", absorption);
   }
   grid.className = "pipette";
 }
@@ -236,7 +260,7 @@ function rgbToHex(rgb) {
   return `#${rHex}${gHex}${bHex}`;
 }
 
-function getColor() {
-  pickedColor = this.style.backgroundColor;
+function getColor(element) {
+  pickedColor = element.style.backgroundColor;
   anyColorButton.value = rgbToHex(pickedColor);
 }
