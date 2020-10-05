@@ -18,15 +18,19 @@ function makeEaseOut(timing) {
     return 1 - timing(1 - timeFraction);
   };
 }
+function makeEaseIn(timing) {
+  return function (timeFraction) {
+    return timing(timeFraction);
+  };
+}
 const easeOut = makeEaseOut(timing);
-const createGridButton = document.getElementById("create_grid");
-const savePictureButton = document.getElementById("save_button");
-const acceptSaveButton = document.getElementById("accept_save");
+const easeIn = makeEaseIn(timing);
 const nameInput = document.getElementById("pic_name");
+const brushButton = document.getElementById("brush_icon");
+const anyColorButton = document.getElementById("any_color_picker");
+const createGridButton = document.getElementById("create_grid");
 const loadPictureButton = document.getElementById("load_button");
 const clearHistoryButton = document.getElementById("clear_history");
-const anyColorButton = document.getElementById("any_color_picker");
-const brushButton = document.getElementById("brush_icon");
 const fillingButton = document.getElementById("filling_icon");
 const pipetteButton = document.getElementById("pipette_icon");
 const gridVisButton = document.getElementById("switch_grid_vis");
@@ -35,22 +39,16 @@ var paintableColor = "#FFFFFF";
 var gridVisibility = 1;
 var drawing = 0;
 var grid = document.getElementById("_grid");
-var grid_wrap = document.getElementById("grid_wrap");
 var cells = document.getElementsByClassName("cell");
 var colors = document.getElementsByClassName("color_block");
+var grid_wrap = document.getElementById("grid_wrap");
 
 (function onStart() {
-  grid_wrap.style.display = "none";
   createGridButton.addEventListener("click", gridCreate);
-  acceptSaveButton.addEventListener("mousedown", savePicture);
-  loadPictureButton.addEventListener("mousedown", loadPicture);
-  clearHistoryButton.addEventListener("mousedown", clearHistory);
   fillingButton.addEventListener("mousedown", switchOnFilling);
   brushButton.addEventListener("mousedown", switchOnBrush);
   pipetteButton.addEventListener("mousedown", switchOnPipette);
   gridVisButton.addEventListener("mousedown", switchGridVis);
-  grid.addEventListener("mouseup", stopDrawing);
-  grid.addEventListener("mouseleave", stopDrawing);
   loadPictureButton.disabled = localStorage.length ? false : true;
   for (let color of colors) {
     color.addEventListener("mousedown", (event) =>
@@ -88,7 +86,6 @@ function cellCreate(size) {
 }
 
 function gridCreate() {
-  grid_wrap.style.visibility = "hidden";
   height = document.getElementById("grid_height").value;
   height = height ? Number(height) : 96;
   width = document.getElementById("grid_width").value;
@@ -123,8 +120,9 @@ function gridCreate() {
     grid.appendChild(level);
   }
   grid_wrap.appendChild(grid);
-  grid_wrap.style.visibility = "visible";
   grid_wrap.style.display = "block";
+  grid.addEventListener("mouseup", stopDrawing);
+  grid.addEventListener("mouseleave", stopDrawing);
   toolHandler(grid.className);
 }
 
@@ -248,6 +246,8 @@ function savePicture() {
   let pictureName = "Test Picture";
   localStorage.setItem(pictureName, grid.outerHTML);
   loadPictureButton.disabled = false;
+  saved();
+  hidePicNameInput();
 }
 
 function loadPicture() {
@@ -262,6 +262,8 @@ function loadPicture() {
   grid.style.height = gridOnLoad.style.height;
   let currentTool = grid.className;
   grid = gridOnLoad;
+  grid.addEventListener("mouseup", stopDrawing);
+  grid.addEventListener("mouseleave", stopDrawing);
   grid_wrap.appendChild(grid);
   toolHandler(currentTool);
 }
@@ -287,12 +289,34 @@ function getColor(element) {
 
 // Animations Section
 
+function saved() {
+  animate({
+    duration: 600,
+    timing: easeOut,
+    draw(progress) {
+      if (progress <= 0.9) {
+        g = 200 + 55 * progress;
+        saveWrap.setAttribute("style", `background-color: rgb(0, ${g}, 0);`);
+      } else {
+        saveWrap.style.backgroundColor = `white`;
+      }
+    },
+  });
+}
+
 function hidePicNameInput() {
-  acceptSaveButton.style.opacity = 0;
-  nameInput.style.opacity = 0;
-  acceptSaveButton.style.zIndex = 0;
-  nameInput.style.zIndex = 0;
-  savePictureButton.style.opacity = 1;
+  animate({
+    duration: 300,
+    timing: easeIn,
+    draw(progress) {
+      nameInput.style.zIndex = 2;
+      acceptSave.setAttribute("style", `left: ${220 - progress * 50}px`);
+      deniSave.setAttribute("style", `right: ${220 - progress * 53}px`);
+      savePictureButton.style.opacity = progress;
+      savePictureButton.style.display = "block";
+      savePictureButton.style.zIndex = 3;
+    },
+  });
 }
 
 function showPicNameInput() {
@@ -300,14 +324,24 @@ function showPicNameInput() {
     duration: 300,
     timing: easeOut,
     draw(progress) {
-      acceptSaveButton.style.opacity = progress;
-      nameInput.style.opacity = progress;
-      acceptSaveButton.style.zIndex = 2;
-      nameInput.style.zIndex = 2;
+      nameInput.style.zIndex = 3;
+      acceptSave.setAttribute("style", `left: ${170 + progress * 50}px;`);
+      deniSave.setAttribute("style", `right: ${170 + progress * 53}px;`);
+      savePictureButton.style.zIndex = 0;
       savePictureButton.style.opacity = 1 - progress;
+      if (progress == 1) {
+        savePictureButton.style.display = "none";
+      }
     },
   });
 }
 
+const saveWrap = document.querySelector(".save_wrap");
+const savePictureButton = document.querySelector("#save_button");
+const acceptSave = document.querySelector("#accept_save");
+const deniSave = document.querySelector("#deni_save");
 savePictureButton.addEventListener("click", showPicNameInput);
-window.addEventListener("click", hidePicNameInput);
+acceptSave.addEventListener("click", savePicture);
+deniSave.addEventListener("click", hidePicNameInput);
+loadPictureButton.addEventListener("mousedown", loadPicture);
+clearHistoryButton.addEventListener("mousedown", clearHistory);

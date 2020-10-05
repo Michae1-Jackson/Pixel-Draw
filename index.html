@@ -28,13 +28,12 @@
       <h1>PIXEL DRAW</h1>
       <div class="storage_manage">
         <div class="save_wrap">
+          <div id="deni_save"></div>
           <button id="save_button">
             <p>SAVE</p>
           </button>
-          <input type="text" id="pic_name" placeholder="Input picture name" />
-          <div id="accept_save">
-            <p>ACCEPT</p>
-          </div>
+          <input type="text" id="pic_name" placeholder="Название картинки" />
+          <div id="accept_save"></div>
         </div>
         <button id="load_button">
           <p>LOAD</p>
@@ -44,12 +43,12 @@
         </button>
       </div>
       <div class="params">
-        <p class="param_input"><b>GRID</b> height in cells</p>
+        <p class="param_input"> Количество ячеек <b>сетки</b> по вертикали</p>
         <input id="grid_height" type="text" placeholder=" 1 &mdash; 192" />
-        <p class="param_input"><b>GRID</b> width in cells</p>
+        <p class="param_input">Количество ячеек <b>сетки</b> в ширину</p>
         <input id="grid_width" type="text" placeholder=" 1 &mdash; 192" />
-        <p class="param_input"><b>GRID CELL</b> size in pixels</p>
-        <input id="cell_size" type="text" placeholder=" 6 &mdash; 64" />
+        <p class="param_input"><b>Размер ячейки</p>
+        <input id="cell_size" type="text" placeholder=" 6 &mdash; 64 px" />
       </div>
       <button id="create_grid">
         <p>CREATE NEW GRID</p>

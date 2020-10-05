@@ -90,10 +90,10 @@ h1 {
   transition: background-color 0.2s;
 }
 
-#save_button:hover,
+
 #load_button:hover,
 #clear_history:hover {
-  background-color: green;
+  background-color: rgb(0, 255, 0);
   cursor: pointer;
 }
 
@@ -101,37 +101,73 @@ h1 {
   position: relative;
   height: 6rem;
   width: 14rem;
+  border-radius: 32px;
+}
+
+#save_button,
+#pic_name,
+#accept_save,
+#deni_save {
+  position: absolute;
 }
 
 #save_button {
-  position: absolute;
-  color: gold;
-  background-color: #0571FF;
-  z-index: 1;
+  color: goldenrod;
+  text-shadow: -1px 0 1px black, 0 1px 1px black, 1px 0 1px black, 0 -1px 1px black;
+  background-color: #195719;
+  z-index: 3;
+}
+
+#save_button:hover {
+  text-shadow: none;
+  background-color: rgb(0, 200, 0);
+  color: black;
+  cursor: pointer;
 }
 
 #pic_name {
-  position: absolute;
-  left: 1rem;
-  padding-left: 0.5rem;
+  left: 0.75rem;
+  top: 1.5rem;
+  padding-left: 1rem;
   width: 11.5rem;
   height: 3rem;
   border: none;
   box-shadow: 0 0 4px 1px #897501;
   border-radius: 0.5rem;
   outline: none;
-  z-index: 0;
-  opacity: 0;
+  z-index: 2;
+  transition: opacity 0.3s linear;
+}
+
+#accept_save,
+#deni_save {
+  top: 2rem;
+  height: 2rem;
+  width: 2rem;
+  background-size: contain;
+  transition: all 0.2s;
+  z-index: 1;
 }
 
 #accept_save {
-  position: absolute;
-  top: 3rem;
-  height: 3rem;
-  left: 4rem;
-  width: 6rem;
-  z-index: 0;
-  opacity: 0;
+  left: 170px;
+  background-image: url("../assets/images/accept.svg");
+}
+
+#deni_save {
+  right: 170px;
+  background-image: url("../assets/images/cross.svg");
+}
+
+#deni_save:hover,
+#accept_save:hover {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+#deni_save:active,
+#accept_save:active {
+  transform: scale(1);
 }
 
 #load_button {
@@ -293,7 +329,7 @@ h1 {
 /* Canvas Grid */
 
 #grid_wrap {
-  display: block;
+  display: none;
   margin: 0 auto 2rem auto;
   padding: 1rem;
   background-color: #4b0082;
