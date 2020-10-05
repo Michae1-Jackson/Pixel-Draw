@@ -1,5 +1,28 @@
+function animate({ timing, draw, duration }) {
+  let start = performance.now();
+  requestAnimationFrame(function animate(time) {
+    let timeFraction = (time - start) / duration;
+    if (timeFraction > 1) timeFraction = 1;
+    let progress = timing(timeFraction);
+    draw(progress);
+    if (timeFraction < 1) {
+      requestAnimationFrame(animate);
+    }
+  });
+}
+function timing(timeFraction) {
+  return Math.pow(timeFraction, 2);
+}
+function makeEaseOut(timing) {
+  return function (timeFraction) {
+    return 1 - timing(1 - timeFraction);
+  };
+}
+const easeOut = makeEaseOut(timing);
 const createGridButton = document.getElementById("create_grid");
 const savePictureButton = document.getElementById("save_button");
+const acceptSaveButton = document.getElementById("accept_save");
+const nameInput = document.getElementById("pic_name");
 const loadPictureButton = document.getElementById("load_button");
 const clearHistoryButton = document.getElementById("clear_history");
 const anyColorButton = document.getElementById("any_color_picker");
@@ -19,7 +42,7 @@ var colors = document.getElementsByClassName("color_block");
 (function onStart() {
   grid_wrap.style.display = "none";
   createGridButton.addEventListener("click", gridCreate);
-  savePictureButton.addEventListener("mousedown", savePicture);
+  acceptSaveButton.addEventListener("mousedown", savePicture);
   loadPictureButton.addEventListener("mousedown", loadPicture);
   clearHistoryButton.addEventListener("mousedown", clearHistory);
   fillingButton.addEventListener("mousedown", switchOnFilling);
@@ -261,3 +284,30 @@ function getColor(element) {
   pickedColor = element.style.backgroundColor;
   anyColorButton.value = rgbToHex(pickedColor);
 }
+
+// Animations Section
+
+function hidePicNameInput() {
+  acceptSaveButton.style.opacity = 0;
+  nameInput.style.opacity = 0;
+  acceptSaveButton.style.zIndex = 0;
+  nameInput.style.zIndex = 0;
+  savePictureButton.style.opacity = 1;
+}
+
+function showPicNameInput() {
+  animate({
+    duration: 300,
+    timing: easeOut,
+    draw(progress) {
+      acceptSaveButton.style.opacity = progress;
+      nameInput.style.opacity = progress;
+      acceptSaveButton.style.zIndex = 2;
+      nameInput.style.zIndex = 2;
+      savePictureButton.style.opacity = 1 - progress;
+    },
+  });
+}
+
+savePictureButton.addEventListener("click", showPicNameInput);
+window.addEventListener("click", hidePicNameInput);
