@@ -351,6 +351,7 @@ h1 {
   background-color: #ffffff;
   -webkit-transition: -webkit-opacity 0.07s, -webkit-transform 0.07s;
   transition: opacity 0.07s, transform 0.07s;
+  box-shadow: 0 0 1px 0 black;
 }
 
 .cell:hover {
@@ -358,8 +359,4 @@ h1 {
   opacity: 0.8;
   box-shadow: 0 0 0 0.8px black;
   border-radius: 1px;
-}
-
-.gridVis {
-  box-shadow: 0 0 1px 0 black;
 }
