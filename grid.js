@@ -39,7 +39,7 @@ var paintableColor = "#FFFFFF";
 var gridVisibility = 1;
 var drawing = 0;
 var grid = document.getElementById("_grid");
-var cells = document.getElementsByClassName("cell");
+var cells = $(".cell");
 var colors = document.getElementsByClassName("color_block");
 var grid_wrap = document.getElementById("grid_wrap");
 
@@ -78,7 +78,7 @@ function toolHandler(tool) {
 
 function cellCreate(size) {
   let cell = document.createElement("div");
-  cell.setAttribute("class", "cell gridVis");
+  cell.setAttribute("class", "cell");
   cell.style.width = `${size}px`;
   cell.style.height = `${size}px`;
   cell.style.backgroundColor = "rgb(255, 255, 255)";
@@ -123,16 +123,17 @@ function gridCreate() {
   grid_wrap.style.display = "block";
   grid.addEventListener("mouseup", stopDrawing);
   grid.addEventListener("mouseleave", stopDrawing);
+  cells = $(".cell");
   toolHandler(grid.className);
 }
 
 function toolSwitcher() {
-  for (let cell of cells) {
+  cells.each((i, cell) => {
     cell.removeEventListener("mouseover", changeColor);
     cell.removeEventListener("mousedown", startDrawing);
     cell.removeEventListener("mousedown", absorption);
     cell.removeEventListener("mousedown", startFilling);
-  }
+  });
 }
 
 function changeColor() {
@@ -152,10 +153,10 @@ function stopDrawing() {
 
 function switchOnBrush() {
   toolSwitcher();
-  for (let cell of cells) {
+  cells.each((i, cell) => {
     cell.addEventListener("mousedown", startDrawing);
     cell.addEventListener("mouseover", changeColor);
-  }
+  });
   grid.className = "brush";
 }
 
@@ -209,9 +210,9 @@ function startFilling(event) {
 
 function switchOnFilling() {
   toolSwitcher();
-  for (let cell of cells) {
+  cells.each((i, cell) => {
     cell.addEventListener("mousedown", startFilling);
-  }
+  });
   grid.className = "filling";
 }
 
@@ -222,23 +223,23 @@ function absorption() {
 
 function switchOnPipette() {
   toolSwitcher();
-  for (let cell of cells) {
+  cells.each((i, cell) => {
     cell.addEventListener("mousedown", absorption);
-  }
+  });
   grid.className = "pipette";
 }
 
 function switchGridVis() {
   if (gridVisibility) {
     gridVisibility = 0;
-    for (let cell of cells) {
-      cell.classList.remove("gridVis");
-    }
+    cells.each((i, cell) => {
+      $(cell).css({ "box-shadow": "none" });
+    });
   } else {
     gridVisibility = 1;
-    for (let cell of cells) {
-      cell.setAttribute("class", "cell gridVis");
-    }
+    cells.each((i, cell) => {
+      $(cell).css({ "box-shadow": "0 0 1px 0 black" });
+    });
   }
 }
 
