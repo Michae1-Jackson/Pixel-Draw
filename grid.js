@@ -266,6 +266,7 @@ function loadPicture() {
   grid.addEventListener("mouseup", stopDrawing);
   grid.addEventListener("mouseleave", stopDrawing);
   grid_wrap.appendChild(grid);
+  cells = $(".cell");
   toolHandler(currentTool);
 }
 
